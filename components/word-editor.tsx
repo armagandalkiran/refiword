@@ -13,7 +13,7 @@ const schema = yup.object().shape({
   wordMeaning: yup.string().required(),
 });
 
-const WordEditor = () => {
+const WordEditor = ({getWordList}:any) => {
   const {
     control,
     handleSubmit,
@@ -36,7 +36,7 @@ const WordEditor = () => {
       });
 
       if (response.ok) {
-        // do something
+        getWordList()
       } else {
         // fail something
       }

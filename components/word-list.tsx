@@ -14,7 +14,7 @@ export const WordList = ({ items }: WordListProps) => {
   return (
     <div>
       <ul>
-        {items.map((item) => (
+        {items?.map((item) => (
           <li key={item._id}>
             <p>{item.word}</p>
             <p>{item.meaning}</p>

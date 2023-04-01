@@ -1,8 +1,21 @@
+import React from "react";
 import WordEditor from "@/components/word-editor";
 import { WordList } from "@/components/word-list";
 import Head from "next/head";
 
-export default function Dashboard({ wordList }: any) {
+export default function Dashboard({ data }: any) {
+  const [wordList, setWordList] = React.useState(data);
+
+  const getWordList = async () => {
+    try {
+      const response = await fetch("/api/word-list");
+      const data = await response.json();
+      setWordList(data);
+    } catch (error) {
+      return error;
+    }
+  };
+
   return (
     <>
       <Head>
@@ -12,7 +25,7 @@ export default function Dashboard({ wordList }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <WordEditor />
+        <WordEditor getWordList={getWordList}/>
         <WordList items={wordList} />
       </main>
     </>
@@ -21,13 +34,15 @@ export default function Dashboard({ wordList }: any) {
 
 export const getServerSideProps = async () => {
   try {
-    const response = await fetch(`${process.env.PUBLIC_URL_API_ENDPOINT}/word-list`);
+    const response = await fetch(
+      `${process.env.PUBLIC_URL_API_ENDPOINT}/word-list`
+    );
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const wordList = await response.json();
-    return { props: { wordList } };
+    return { props: { data: wordList } };
   } catch (error) {
-    return { props: { wordList: [] } };
+    return { props: { data: [] } };
   }
 };
