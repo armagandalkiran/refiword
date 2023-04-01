@@ -10,7 +10,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <p className="text-red-500">refiword</p>
+        <p className="text-red-500">Home</p>
       </main>
     </>
   );
