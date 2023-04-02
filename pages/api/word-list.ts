@@ -30,7 +30,9 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
 
       const userId = req.userId;
 
-      const words: IWord[] = await Word.find({ owner: userId }).exec();
+      const words: IWord[] = await Word.find({ owner: userId })
+        .sort({ _id: -1 })
+        .exec();
 
       return res.status(200).json(words);
     } catch (error) {

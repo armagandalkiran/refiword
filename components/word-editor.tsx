@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { IconArrowNarrowDown } from "@tabler/icons-react";
 import * as yup from "yup";
 
 interface WordEditorProps {
@@ -13,7 +14,7 @@ const schema = yup.object().shape({
   wordMeaning: yup.string().required(),
 });
 
-const WordEditor = ({getWordList}:any) => {
+const WordEditor = ({ getWordList }: any) => {
   const {
     control,
     handleSubmit,
@@ -36,7 +37,7 @@ const WordEditor = ({getWordList}:any) => {
       });
 
       if (response.ok) {
-        getWordList()
+        getWordList();
       } else {
         // fail something
       }
@@ -46,30 +47,48 @@ const WordEditor = ({getWordList}:any) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label htmlFor="word">Word:</label>
-        <Controller
-          name="word"
-          control={control}
-          defaultValue=""
-          render={({ field }) => <input {...field} id="word" type="text" />}
-        />
-        {errors.word && <p>{errors.word.message}</p>}
+    <form
+      className="h-full px-4 py-10 flex flex-col gap-y-8"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div className="relative flex flex-col gap-y-8">
+        <div>
+          <Controller
+            name="word"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <input
+                {...field}
+                className="focus:outline-none h-10 rounded px-4 w-full"
+                placeholder="Word"
+                id="word"
+                type="text"
+              />
+            )}
+          />
+          {/* {errors.word && <p>{errors.word.message}</p>} */}
+        </div>
+        <IconArrowNarrowDown className="absolute text-paledogwood inset-0 mx-auto my-auto" />
+        <div>
+          <Controller
+            name="wordMeaning"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <input
+                className="focus:outline-none h-10 rounded px-4 w-full"
+                placeholder="Meaning"
+                {...field}
+                id="wordMeaning"
+                type="text"
+              />
+            )}
+          />
+          {/* {errors.wordMeaning && <p>{errors.wordMeaning.message}</p>} */}
+        </div>
       </div>
-      <div>
-        <label htmlFor="wordMeaning">Word Meaning:</label>
-        <Controller
-          name="wordMeaning"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <input {...field} id="wordMeaning" type="text" />
-          )}
-        />
-        {errors.wordMeaning && <p>{errors.wordMeaning.message}</p>}
-      </div>
-      <button type="submit">Submit</button>
+      <button className="h-10 bg-indianred text-white font-bold rounded" type="submit">Save</button>
     </form>
   );
 };

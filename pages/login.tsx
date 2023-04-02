@@ -10,11 +10,12 @@ interface LoginFormProps {
 }
 
 const schema = yup.object().shape({
-  email: yup.string().required(),
-  password: yup.string().required(),
+  email: yup.string().required().email("Invalid email address"),
+  password: yup.string().required().min(8, "minimum 8 characters"),
 });
 
 export default function Login() {
+  const [loginError, setLoginError] = React.useState("");
   const router = useRouter();
   const {
     control,
@@ -33,33 +34,86 @@ export default function Login() {
       });
       if (response.ok) {
         router.push("/dashboard");
+      } else {
+        const error = await response.json();
+        setLoginError(error.message);
       }
     } catch (error) {}
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label htmlFor="email">email:</label>
-        <Controller
-          name="email"
-          control={control}
-          defaultValue=""
-          render={({ field }) => <input {...field} id="email" type="text" />}
-        />
-        {errors.email && <p>{errors.email.message}</p>}
-      </div>
-      <div>
-        <label htmlFor="password">password:</label>
-        <Controller
-          name="password"
-          control={control}
-          defaultValue=""
-          render={({ field }) => <input {...field} id="password" type="text" />}
-        />
-        {errors.password && <p>{errors.password.message}</p>}
-      </div>
-      <button type="submit">Submit</button>
-    </form>
+    <div className="py-16 min-h-screen bg-rebeccapurple">
+      <header>
+        <h1 className="text-indianred font-bold text-3xl text-center">
+          REFIWORD
+        </h1>
+      </header>
+      <form
+        className="h-full px-4 py-10 flex flex-col gap-y-8"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="relative flex flex-col">
+          <label className="text-paledogwood font-semibold" htmlFor="email">
+            Email:
+          </label>
+          <Controller
+            name="email"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <input
+                className="focus:outline-none h-10 rounded px-4"
+                {...field}
+                id="email"
+                type="text"
+              />
+            )}
+          />
+          {errors.email && (
+            <p className="absolute -bottom-7 font-semibold text-red-500">
+              {errors.email.message}
+            </p>
+          )}
+        </div>
+        <div className="relative flex flex-col">
+          <label className="text-paledogwood font-semibold" htmlFor="password">
+            Password:
+          </label>
+          <Controller
+            name="password"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <input
+                className="focus:outline-none h-10 rounded px-4"
+                {...field}
+                id="password"
+                type="password"
+              />
+            )}
+          />
+          {errors.password && (
+            <p className="absolute -bottom-7 font-semibold text-red-500">
+              {errors.password.message || loginError}
+            </p>
+          )}
+          {loginError && (
+            <p className="absolute -bottom-7 font-semibold text-red-500">
+              {loginError}
+            </p>
+          )}
+        </div>
+        <button
+          className="h-10 bg-indianred text-white font-bold rounded"
+          type="submit"
+        >
+          Login
+        </button>
+        <a className="text-center font-semibold text-spacecadet" href="/register">
+          Dont you have an account ?
+          <span className="underline text-indianred ml-1">Create One</span>
+        </a>
+      </form>
+    </div>
   );
 }
