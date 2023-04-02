@@ -2,6 +2,7 @@ import React from "react";
 import WordEditor from "@/components/word-editor";
 import { WordList } from "@/components/word-list";
 import Head from "next/head";
+import { GetServerSidePropsContext } from "next";
 
 export default function Dashboard({ data }: any) {
   const [wordList, setWordList] = React.useState(data);
@@ -32,19 +33,21 @@ export default function Dashboard({ data }: any) {
   );
 }
 
-export const getServerSideProps = async (context: any) => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  if (!context.req.headers.cookie) {
+    return { props: { data: [] } };
+  }
   try {
     const response = await fetch(
       `${process.env.PUBLIC_URL_API_ENDPOINT}/word-list`,
       {
         headers: {
-          cookie:
-            typeof window === "undefined"
-              ? context.req.headers.cookie
-              : undefined,
+          cookie: context.req.headers.cookie,
         },
-        credentials: "include"
-      },
+        credentials: "include",
+      }
     );
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
