@@ -5,6 +5,7 @@ import Head from "next/head";
 import { GetServerSidePropsContext } from "next";
 
 export default function Dashboard({ data }: any) {
+  console.log(data);
   const [wordList, setWordList] = React.useState(data);
 
   const getWordList = async () => {

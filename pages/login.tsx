@@ -34,7 +34,6 @@ export default function Login() {
       if (response.ok) {
         router.push("/dashboard");
       } else {
-        console.log(response);
       }
     } catch (error) {
       console.log(error);
