@@ -49,6 +49,11 @@ export default function Login() {
     }
   };
 
+  React.useEffect(() => {
+    // Prefetch the dashboard page
+    router.prefetch("/dashboard");
+  }, [router]);
+
   return (
     <div className="py-16 min-h-screen bg-rebeccapurple">
       <header>
