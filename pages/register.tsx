@@ -3,6 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface RegisterFormProps {
   username: string;
@@ -134,10 +135,10 @@ export default function Register() {
         >
           Register
         </button>
-        <a className="text-center font-semibold text-spacecadet" href="/login">
+        <Link className="text-center font-semibold text-spacecadet" href="/login">
           Already have an account ?
           <span className="underline text-indianred ml-1">Login</span>
-        </a>
+        </Link>
       </form>
     </div>
   );

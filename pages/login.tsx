@@ -3,6 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import * as yup from "yup";
+import Link from "next/link";
 
 interface LoginFormProps {
   email: string;
@@ -109,10 +110,10 @@ export default function Login() {
         >
           Login
         </button>
-        <a className="text-center font-semibold text-spacecadet" href="/register">
+        <Link className="text-center font-semibold text-spacecadet" href="/register">
           Dont you have an account ?
           <span className="underline text-indianred ml-1">Create One</span>
-        </a>
+        </Link>
       </form>
     </div>
   );
