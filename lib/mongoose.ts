@@ -8,10 +8,10 @@ if (!uri) {
   );
 }
 
-let cached = global.mongoose;
+let cached = (global as any).mongoose;
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+  cached = (global as any).mongoose = { conn: null, promise: null };
 }
 
 async function dbConnect() {
@@ -25,7 +25,7 @@ async function dbConnect() {
       useUnifiedTopology: true,
     };
 
-    cached.promise = mongoose.connect(uri, options).then(() => {
+    cached.promise = mongoose.connect(uri as any, options as any).then(() => {
       console.log("MongoDB connected successfully");
     });
   }

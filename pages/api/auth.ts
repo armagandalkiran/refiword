@@ -45,7 +45,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       return res.status(200).json({ message: "User logged in successfully" });
     } catch (error) {
-      console.error(error);
       return res.status(500).json({ message: "Internal server error" });
     }
   }
@@ -54,7 +53,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // Remove token cookie to log user out
     res.setHeader(
       "Set-Cookie",
-      "token=; HttpOnly; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      "token=; HttpOnly; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
     );
     return res.status(200).json({ message: "User logged out successfully" });
   }
