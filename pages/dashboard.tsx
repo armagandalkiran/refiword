@@ -44,7 +44,7 @@ export const getServerSideProps = async (
       `${process.env.PUBLIC_URL_API_ENDPOINT}/word-list`,
       {
         headers: {
-          cookie: context.req.headers.cookie,
+          Cookie: context.req.headers.cookie,
         },
         credentials: "include",
       }
