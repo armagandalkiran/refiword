@@ -35,10 +35,13 @@ export default async function handler(
     }
   } else if (req.method === "GET") {
     try {
+      await dbConnect();
       const token = req.cookies.token;
+      console.log(process.env.JWT_SECRET, "<<<<<<------ log here")
       if (!token || !process.env.JWT_SECRET) {
         return res.status(401).json({ message: "Unauthorized" });
       }
+      console.log(process.env.JWT_SECRET, "<<<<<<------ log here")
       const decoded = jwt.verify(token, process.env.JWT_SECRET) as any;
       const userId = decoded.userId;
 
