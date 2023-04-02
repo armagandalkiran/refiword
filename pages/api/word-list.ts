@@ -43,7 +43,7 @@ export default async function handler(
       const decoded = jwt.verify(token, process.env.JWT_SECRET) as any;
       const userId = decoded.userId;
 
-      const words: IWord[] = await Word.find({ owner: userId });
+      const words: IWord[] = await Word.find({ owner: userId }).exec();
 
       return res.status(200).json(words);
     } catch (error) {
