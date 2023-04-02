@@ -25,17 +25,25 @@ export default function Dashboard({ data }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <WordEditor getWordList={getWordList}/>
+        <WordEditor getWordList={getWordList} />
         <WordList items={wordList} />
       </main>
     </>
   );
 }
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (context: any) => {
   try {
     const response = await fetch(
-      `${process.env.PUBLIC_URL_API_ENDPOINT}/word-list`
+      `${process.env.PUBLIC_URL_API_ENDPOINT}/word-list`,
+      {
+        headers: {
+          cookie:
+            typeof window === "undefined"
+              ? context.req.headers.cookie
+              : undefined,
+        },
+      }
     );
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
