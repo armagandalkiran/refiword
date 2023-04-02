@@ -33,11 +33,8 @@ export default function Login() {
       });
       if (response.ok) {
         router.push("/dashboard");
-      } else {
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   return (

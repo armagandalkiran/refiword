@@ -3,9 +3,9 @@ import WordEditor from "@/components/word-editor";
 import { WordList } from "@/components/word-list";
 import Head from "next/head";
 import { GetServerSidePropsContext } from "next";
+import Logout from "@/components/logout";
 
 export default function Dashboard({ data }: any) {
-  console.log(data);
   const [wordList, setWordList] = React.useState(data);
 
   const getWordList = async () => {
@@ -29,6 +29,7 @@ export default function Dashboard({ data }: any) {
       <main>
         <WordEditor getWordList={getWordList} />
         <WordList items={wordList} />
+        <Logout />
       </main>
     </>
   );
@@ -38,7 +39,10 @@ export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   if (!context.req.headers.cookie) {
-    return { props: { data: [] } };
+    return {
+      props: { data: [] },
+      redirect: { permanent: false, destination: "/login" },
+    };
   }
   try {
     const response = await fetch(

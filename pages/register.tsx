@@ -2,6 +2,7 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useRouter } from "next/router";
 
 interface RegisterFormProps {
   username: string;
@@ -16,6 +17,7 @@ const schema = yup.object().shape({
 });
 
 export default function Register() {
+  const router = useRouter();
   const {
     control,
     handleSubmit,
@@ -25,7 +27,6 @@ export default function Register() {
   });
 
   const onSubmit = async (data: RegisterFormProps) => {
-    console.log(data)
     try {
       const response = await fetch("/api/register", {
         method: "POST",
@@ -33,13 +34,9 @@ export default function Register() {
         body: JSON.stringify(data),
       });
       if (response.ok) {
-        console.log(response);
-      } else {
-        console.log(response);
+        router.push("/dashboard");
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   return (
