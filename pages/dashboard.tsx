@@ -26,7 +26,12 @@ export default function Dashboard({ data }: any) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <main className="min-h-screen py-16 bg-rebeccapurple">
+      <header>
+        <h1 className="text-indianred font-bold text-3xl text-center">
+          REFIWORD
+        </h1>
+      </header>
         <WordEditor getWordList={getWordList} />
         <WordList items={wordList} />
         <Logout />
