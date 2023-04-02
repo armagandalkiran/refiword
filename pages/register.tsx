@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { IconLoader } from "@tabler/icons-react";
 
 interface RegisterFormProps {
   username: string;
@@ -18,6 +19,7 @@ const schema = yup.object().shape({
 });
 
 export default function Register() {
+  const [loader, setLoader] = React.useState(false);
   const [registerError, setRegisterError] = React.useState("");
   const router = useRouter();
   const {
@@ -29,6 +31,7 @@ export default function Register() {
   });
 
   const onSubmit = async (data: RegisterFormProps) => {
+    setLoader(true);
     try {
       const response = await fetch("/api/register", {
         method: "POST",
@@ -37,11 +40,15 @@ export default function Register() {
       });
       if (response.ok) {
         router.push("/dashboard");
+        setLoader(false);
       } else {
         const error = await response.json();
         setRegisterError(error.message);
+        setLoader(false);
       }
-    } catch (error) {}
+    } catch (error) {
+      setLoader(false);
+    }
   };
 
   return (
@@ -135,11 +142,20 @@ export default function Register() {
         >
           Register
         </button>
-        <Link className="text-center font-semibold text-spacecadet" href="/login">
+        <Link
+          className="text-center font-semibold text-spacecadet"
+          href="/login"
+        >
           Already have an account ?
           <span className="underline text-indianred ml-1">Login</span>
         </Link>
       </form>
+      {loader && (
+        <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black opacity-60 z-40"></div>
+      )}
+      {loader && (
+        <IconLoader className="fixed z-50 w-12 h-12 animate-spin text-indianred inset-0 mx-auto my-auto" />
+      )}
     </div>
   );
 }

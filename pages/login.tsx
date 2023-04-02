@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import * as yup from "yup";
 import Link from "next/link";
+import { IconLoader } from "@tabler/icons-react";
 
 interface LoginFormProps {
   email: string;
@@ -16,6 +17,7 @@ const schema = yup.object().shape({
 });
 
 export default function Login() {
+  const [loader, setLoader] = React.useState(false);
   const [loginError, setLoginError] = React.useState("");
   const router = useRouter();
   const {
@@ -27,6 +29,7 @@ export default function Login() {
   });
 
   const onSubmit = async (data: LoginFormProps) => {
+    setLoader(true);
     try {
       const response = await fetch("/api/auth", {
         method: "POST",
@@ -35,11 +38,15 @@ export default function Login() {
       });
       if (response.ok) {
         router.push("/dashboard");
+        setLoader(false);
       } else {
         const error = await response.json();
         setLoginError(error.message);
+        setLoader(false);
       }
-    } catch (error) {}
+    } catch (error) {
+      setLoader(false);
+    }
   };
 
   return (
@@ -110,11 +117,20 @@ export default function Login() {
         >
           Login
         </button>
-        <Link className="text-center font-semibold text-spacecadet" href="/register">
+        <Link
+          className="text-center font-semibold text-spacecadet"
+          href="/register"
+        >
           Dont you have an account ?
           <span className="underline text-indianred ml-1">Create One</span>
         </Link>
       </form>
+      {loader && (
+        <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black opacity-60 z-40"></div>
+      )}
+      {loader && (
+        <IconLoader className="fixed z-50 w-12 h-12 animate-spin text-indianred inset-0 mx-auto my-auto" />
+      )}
     </div>
   );
 }
