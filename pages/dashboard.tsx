@@ -43,7 +43,8 @@ export const getServerSideProps = async (context: any) => {
               ? context.req.headers.cookie
               : undefined,
         },
-      }
+        credentials: "include"
+      },
     );
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
