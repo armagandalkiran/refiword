@@ -2,8 +2,10 @@ import React from "react";
 import WordEditor from "@/components/word-editor";
 import { WordList } from "@/components/word-list";
 import Head from "next/head";
+import { GetServerSidePropsContext } from "next";
 
 export default function Dashboard({ data }: any) {
+  console.log(data);
   const [wordList, setWordList] = React.useState(data);
 
   const getWordList = async () => {
@@ -25,17 +27,28 @@ export default function Dashboard({ data }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <WordEditor getWordList={getWordList}/>
+        <WordEditor getWordList={getWordList} />
         <WordList items={wordList} />
       </main>
     </>
   );
 }
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  if (!context.req.headers.cookie) {
+    return { props: { data: [] } };
+  }
   try {
     const response = await fetch(
-      `${process.env.PUBLIC_URL_API_ENDPOINT}/word-list`
+      `${process.env.PUBLIC_URL_API_ENDPOINT}/word-list`,
+      {
+        headers: {
+          cookie: context.req.headers.cookie,
+        },
+        credentials: "include",
+      }
     );
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
