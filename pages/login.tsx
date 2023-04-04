@@ -37,8 +37,10 @@ export default function Login() {
         body: JSON.stringify(data),
       });
       if (response.ok) {
+        router.events.on('routeChangeStart', () => setLoader(true));
+        router.events.on('routeChangeComplete', () => setLoader(false));
+        router.events.on('routeChangeError', () => setLoader(false));
         router.push("/dashboard");
-        setLoader(false);
       } else {
         const error = await response.json();
         setLoginError(error.message);
@@ -50,7 +52,6 @@ export default function Login() {
   };
 
   React.useEffect(() => {
-    // Prefetch the dashboard page
     router.prefetch("/dashboard");
   }, [router]);
 

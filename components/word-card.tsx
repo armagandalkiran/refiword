@@ -41,7 +41,7 @@ export const WordCard = ({ item, getWordList }: WordCardProps) => {
   const colorizeWordInPhrase = () => {
     const words = item.phrase.split(" ");
     const colorizedPhrase = words.map((word, index) => {
-      const isTargetWord = item.word.toLowerCase().includes(word.toLowerCase());
+      const isTargetWord = word.toLowerCase().includes(item.word.toLowerCase());
       return (
         <span
           key={word + index}
