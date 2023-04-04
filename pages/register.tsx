@@ -130,7 +130,7 @@ export default function Register() {
               {errors.password.message}
             </p>
           )}
-          {registerError && (
+          {!errors.password && registerError && (
             <p className="absolute -bottom-7 font-semibold text-red-500">
               {registerError}
             </p>
