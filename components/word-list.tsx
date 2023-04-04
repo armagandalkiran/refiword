@@ -5,6 +5,7 @@ interface Item {
   _id: string;
   word: string;
   meaning: string;
+  phrase: string;
 }
 
 interface WordListProps {
