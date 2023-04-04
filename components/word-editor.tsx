@@ -4,9 +4,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { IconArrowNarrowDown } from "@tabler/icons-react";
 import * as yup from "yup";
 
-interface WordEditorProps {
+interface WordData {
   word: string;
   wordMeaning: string;
+}
+
+interface WordEditorProps {
+  getWordList: () => void
 }
 
 const schema = yup.object().shape({
@@ -14,16 +18,17 @@ const schema = yup.object().shape({
   wordMeaning: yup.string().required(),
 });
 
-const WordEditor = ({ getWordList }: any) => {
+const WordEditor = ({ getWordList }: WordEditorProps) => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<WordEditorProps>({
+  } = useForm<WordData>({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: WordEditorProps) => {
+  const onSubmit = async (data: WordData) => {
     try {
       const response = await fetch("/api/word-list", {
         method: "POST",
@@ -37,6 +42,7 @@ const WordEditor = ({ getWordList }: any) => {
       });
 
       if (response.ok) {
+        reset();
         getWordList();
       } else {
         // fail something

@@ -110,7 +110,7 @@ export default function Login() {
               {errors.password.message || loginError}
             </p>
           )}
-          {loginError && (
+          {!errors.password && loginError && (
             <p className="absolute -bottom-7 font-semibold text-red-500">
               {loginError}
             </p>
