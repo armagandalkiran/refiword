@@ -9,10 +9,11 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
     try {
       await dbConnect();
 
-      const { word, meaning } = req.body;
+      const { word, meaning, phrase } = req.body;
       const newWord: IWord = new Word({
         word,
         meaning,
+        phrase,
         owner: req.userId,
       });
 

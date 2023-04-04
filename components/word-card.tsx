@@ -7,6 +7,7 @@ interface Item {
   _id: string;
   word: string;
   meaning: string;
+  phrase: string;
 }
 
 interface WordCardProps {
@@ -36,6 +37,23 @@ export const WordCard = ({ item, getWordList }: WordCardProps) => {
       }
     } catch (error) {}
   };
+
+  const colorizeWordInPhrase = () => {
+    const words = item.phrase.split(" ");
+    const colorizedPhrase = words.map((word, index) => {
+      const isTargetWord = item.word.toLowerCase().includes(word.toLowerCase());
+      return (
+        <span
+          key={word + index}
+          className={isTargetWord ? `${"underline text-rebeccapurple"}` : ""}
+        >
+          {word}{" "}
+        </span>
+      );
+    });
+
+    return colorizedPhrase;
+  };
   return (
     <>
       <li
@@ -50,6 +68,12 @@ export const WordCard = ({ item, getWordList }: WordCardProps) => {
           <p className={wordClasses}>{item.word}</p>
           <IconArrowNarrowRight className="text-paledogwood inset-0 mx-auto my-auto flex-1" />
           <p className={wordClasses}>{item.meaning}</p>
+        </div>
+        <div className="border-t border-paledogwood py-2">
+          <p className="text-gray-700">
+            <span className="text-spacecadet mr-2 font-bold">Phrase:</span>
+            {item.phrase ? colorizeWordInPhrase() : ""}
+          </p>
         </div>
       </li>
       <Popup show={showPopup} setShow={setShowPopup} title="Are you sure?">
