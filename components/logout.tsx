@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
+import { IconLogout } from "@tabler/icons-react";
 
 const Logout = () => {
   const router = useRouter();
@@ -17,7 +18,10 @@ const Logout = () => {
   };
   return (
     <div>
-      <button onClick={handleLogout}>Logout</button>
+      <button className="flex text-paledogwood" onClick={handleLogout}>
+        <IconLogout />
+        <span className="ml-2">Logout</span>
+      </button>
     </div>
   );
 };
