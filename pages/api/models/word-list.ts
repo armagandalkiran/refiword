@@ -5,6 +5,7 @@ export interface IWord extends Document {
   word: string;
   meaning: string;
   phrase: string;
+  choices?: string[];
 }
 
 const wordSchema = new Schema(
@@ -13,6 +14,7 @@ const wordSchema = new Schema(
     word: { type: String, required: true },
     meaning: { type: String, required: true },
     phrase: { type: String, required: true },
+    choices: {type: [String], required: false}
   },
   { versionKey: false }
 );

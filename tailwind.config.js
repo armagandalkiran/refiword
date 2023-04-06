@@ -11,8 +11,8 @@ module.exports = {
         paledogwood: "#FFD9CE",
         rebeccapurple: "#593C8F",
         iceblue: "#8EF9F3",
-        spacecadet: "#171738"
-
+        spacecadet: "#171738",
+        lightgreyishblue: "#778899",
       },
     },
   },

@@ -31,32 +31,35 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
 
       const userId = req.userId;
 
-      const words: IWord[] = await Word.find({ owner: userId })
+      const wordList: IWord[] = await Word.find({ owner: userId })
         .sort({ _id: -1 })
         .exec();
 
-      return res.status(200).json(words);
+      return res.status(200).json(wordList);
     } catch (error) {
       res.status(500).json({ message: "Something went wrong" });
     }
   } else if (req.method === "DELETE") {
-  try {
-    await dbConnect();
+    try {
+      await dbConnect();
 
-    const userId = req.userId;
+      const userId = req.userId;
 
-    const wordId = req.query.id;
-    const deletedWord = await Word.findOneAndDelete({ _id: wordId, owner: userId });
+      const wordId = req.query.id;
+      const deletedWord = await Word.findOneAndDelete({
+        _id: wordId,
+        owner: userId,
+      });
 
-    if (!deletedWord) {
-      return res.status(404).json({ message: "Word not found" });
+      if (!deletedWord) {
+        return res.status(404).json({ message: "Word not found" });
+      }
+
+      return res.status(200).json({ message: "Word deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Something went wrong" });
     }
-
-    return res.status(200).json({ message: "Word deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
   }
-}
 }
 
 export default authMiddleware(handler);

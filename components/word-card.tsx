@@ -42,13 +42,12 @@ export const WordCard = ({ item, getWordList }: WordCardProps) => {
     const words = item.phrase.split(" ");
     const colorizedPhrase = words.map((word, index) => {
       const isTargetWord = word.toLowerCase().includes(item.word.toLowerCase());
-      return (
-        <span
-          key={word + index}
-          className={isTargetWord ? `${"underline text-rebeccapurple"}` : ""}
-        >
+      return isTargetWord ? (
+        <span key={word + index} className="font-extrabold text-rebeccapurple">
           {word}{" "}
         </span>
+      ) : (
+        `${word} `
       );
     });
 
