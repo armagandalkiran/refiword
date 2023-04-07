@@ -24,7 +24,12 @@ async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
       item.choices = shuffledChoices;
     });
 
-    return res.status(200).json(wordList);
+    const wordListWithPhrases = wordList.filter((item) => item.phrase);
+    const shuffledWordListWithPhrases = wordListWithPhrases.sort(
+      () => 0.5 - Math.random()
+    );
+
+    return res.status(200).json(shuffledWordListWithPhrases);
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
   }

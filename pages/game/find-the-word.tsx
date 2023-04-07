@@ -1,13 +1,15 @@
 import React from "react";
 import Head from "next/head";
 import { GetServerSidePropsContext } from "next";
-import Logout from "@/components/logout";
 import { IconLoader } from "@tabler/icons-react";
 import Navbar from "@/components/navbar";
+import GameSuccessInfo from "@/components/game-success-info";
 
 export default function FindTheWord({ data }: any) {
   const [loader, setLoader] = React.useState(false);
   const [questionIndex, setQuestionIndex] = React.useState(0);
+
+  const isGameFinished = data.length === questionIndex;
 
   const hideWordInsidePhrase = (phrase: string, word: string) => {
     return phrase?.replace(new RegExp(word, "gi"), "_".repeat(word.length));
@@ -28,25 +30,34 @@ export default function FindTheWord({ data }: any) {
       </Head>
       <main className="min-h-screen bg-rebeccapurple">
         <Navbar />
-        <div className="question-container p-4">
-          <h4 className="text-paledogwood">Fill in the blank.</h4>
-          <p className="py-2 font-bold text-lg">
-            <span className="mr-1">{questionIndex + 1}.</span>
-            {hideWordInsidePhrase(
-              data[questionIndex]?.phrase,
-              data[questionIndex]?.word
-            )}
-          </p>
-          <ul className="choices-container py-2 text-lightgreyishblue text-sm flex flex-col gap-y-2 font-semibold">
-            {data[questionIndex]?.choices.map(
-              (choice: string, index: number) => (
-                <li className="bg-paledogwood p-2 rounded-lg" key={index}>
-                  <button className="w-full" onClick={() => handleClick(choice)}>{choice}</button>
-                </li>
-              )
-            )}
-          </ul>
-        </div>
+        {isGameFinished ? (
+          <GameSuccessInfo />
+        ) : (
+          <div className="question-container p-4">
+            <h4 className="text-paledogwood">Fill in the blank.</h4>
+            <p className="py-2 font-bold text-lg">
+              <span className="mr-1">{questionIndex + 1}.</span>
+              {hideWordInsidePhrase(
+                data[questionIndex]?.phrase,
+                data[questionIndex]?.word
+              )}
+            </p>
+            <ul className="choices-container py-2 text-lightgreyishblue text-sm flex flex-col gap-y-2 font-semibold">
+              {data[questionIndex]?.choices.map(
+                (choice: string, index: number) => (
+                  <li className="bg-paledogwood p-2 rounded-lg" key={index}>
+                    <button
+                      className="w-full"
+                      onClick={() => handleClick(choice)}
+                    >
+                      {choice}
+                    </button>
+                  </li>
+                )
+              )}
+            </ul>
+          </div>
+        )}
       </main>
       {loader && (
         <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black opacity-60 z-40"></div>
