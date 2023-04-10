@@ -31,9 +31,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       // Create and sign JWT token
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-        expiresIn: "7d",
-      });
+      const token = jwt.sign(
+        { userId: user._id, userName: user.username },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "7d",
+        }
+      );
 
       // Set the token as a cookie
       res.setHeader(
